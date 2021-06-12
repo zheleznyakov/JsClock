@@ -1,6 +1,7 @@
 //r^2=(x-a)^2+(y-b)^2
 // x = a+r*cost
 // y = a+r*sint
+// for test commit
 
 let el = document.getElementById("board");
 let ctx = el.getContext("2d");

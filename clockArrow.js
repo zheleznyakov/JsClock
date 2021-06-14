@@ -9,12 +9,14 @@ class clockArrow {
   // #context;
   //#fi = 270;
 
-  constructor(x, y, rad, canvasContext) {
+  constructor(x, y, rad, type, canvasContext) {
     this._coordX = x;
     this._coordY = y;
     this._radius = rad;
     this._context = canvasContext;
-    this._fi = 270;
+    this._type = type;
+
+    this._savedImage = null;
 
     setInterval(() => {
       this.secondTick();
@@ -22,13 +24,37 @@ class clockArrow {
   }
 
   secondTick() {
+    let d = new Date();
+
+    switch (this._type) {
+      case "sec":
+        let s = d.getSeconds();
+        this._fi = 6 * s;
+        break;
+      case "min":
+        let m = d.getMinutes();
+        this._fi = 6 * m;
+        break;
+      case "hour":
+        let h = d.getHours();
+        this._fi = (360 / 12) * h;
+        //console.log(this._fi);
+        break;
+    }
+
     let x = this.calcX();
+
     let y = this.calcY();
     this.drawSeconds(x, y, "blue");
-    this._fi += 6;
   }
 
   drawSeconds(x, y, color) {
+    if (this._savedImage)
+      this._context.putImageData(
+        this._savedImage,
+        this._savedRect[0],
+        this._savedRect[1]
+      );
     let SavedRect = this.rectCalc(this._coordX, this._coordY, x, y);
     let SavedImage = this._context.getImageData(
       SavedRect[0],
@@ -36,6 +62,8 @@ class clockArrow {
       SavedRect[2],
       SavedRect[3]
     );
+    this._savedImage = SavedImage;
+    this._savedRect = SavedRect;
 
     this._context.strokeStyle = color;
     this._context.beginPath();
@@ -43,16 +71,16 @@ class clockArrow {
     this._context.lineTo(x, y);
     this._context.stroke();
 
-    setTimeout(() => {
-      this._context.putImageData(SavedImage, SavedRect[0], SavedRect[1]);
-    }, 990);
+    // setTimeout(() => {
+    //   this._context.putImageData(SavedImage, SavedRect[0], SavedRect[1]);
+    // }, 990);
   }
   calcX() {
-    let cosT = Math.cos((Math.PI * this._fi) / 180);
+    let cosT = Math.cos((2 * Math.PI * this._fi) / 180);
     return Math.round(this._coordX + this._radius * cosT);
   }
   calcY() {
-    let sinT = Math.sin((Math.PI * this._fi) / 180);
+    let sinT = Math.sin((2 * Math.PI * this._fi) / 180);
     return Math.round(this._coordX + this._radius * sinT);
   }
 

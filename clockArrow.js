@@ -29,15 +29,15 @@ class clockArrow {
     switch (this._type) {
       case "sec":
         let s = d.getSeconds();
-        this._fi = 6 * s;
+        this._fi = 270 + 6 * s;
         break;
       case "min":
         let m = d.getMinutes();
-        this._fi = 6 * m;
+        this._fi = 270 + 6 * m;
         break;
       case "hour":
         let h = d.getHours();
-        this._fi = (360 / 12) * h;
+        this._fi = 270 + (360 / 12) * h;
         //console.log(this._fi);
         break;
     }
@@ -70,17 +70,18 @@ class clockArrow {
     this._context.moveTo(this._coordX, this._coordY);
     this._context.lineTo(x, y);
     this._context.stroke();
+    console.log(this._fi);
 
     // setTimeout(() => {
     //   this._context.putImageData(SavedImage, SavedRect[0], SavedRect[1]);
     // }, 990);
   }
   calcX() {
-    let cosT = Math.cos((2 * Math.PI * this._fi) / 180);
+    let cosT = Math.cos((Math.PI * this._fi) / 180);
     return Math.round(this._coordX + this._radius * cosT);
   }
   calcY() {
-    let sinT = Math.sin((2 * Math.PI * this._fi) / 180);
+    let sinT = Math.sin((Math.PI * this._fi) / 180);
     return Math.round(this._coordX + this._radius * sinT);
   }
 

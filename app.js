@@ -5,5 +5,5 @@ let img = document.getElementById("image1");
 
 ctx.drawImage(img,10,10);
 
-const cl = new Clock(110,110,80, ctx);
+const cl = new Clock(210,210,150, ctx);
 

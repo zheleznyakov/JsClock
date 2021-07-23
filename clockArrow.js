@@ -52,7 +52,9 @@ class clockArrow {
                 break;
             case "hour":
                 let h = d.getHours();
-                this._fi = 270 + (360 / 12) * h;
+                let append =(100/60* d.getMinutes()) /100;
+
+                this._fi = 270 + (360 / 12) * (h+append);
                 //console.log(this._fi);
                 break;
         }
@@ -74,6 +76,19 @@ class clockArrow {
     }
 
     drawArrow() {
+        //we draw the substrate
+        this._radius +=2;
+        this.calculateCoords();
+        this._context.strokeStyle = "black";
+        this._context.lineWidth = this._lineWidth+4;
+        this._context.beginPath();
+        this._context.moveTo(this._coordX, this._coordY);
+        this._context.lineTo(this._calculatedX, this._calculatedY);
+        this._context.stroke();
+
+        //we draw the arrow
+        this._radius -=2;
+        this.calculateCoords();
         this._context.strokeStyle = this._color;
         this._context.lineWidth = this._lineWidth;
         this._context.beginPath();
@@ -96,14 +111,14 @@ class clockArrow {
     rectCalc(x0, y0, x, y) {
         let mas = [];
         mas[0] = x0 < x ? x0 : x;
-        mas[0]--;
+        mas[0]-=this._lineWidth+4;
         mas[1] = y0 < y ? y0 : y;
-        mas[1]--;
+        mas[1]-=this._lineWidth+4;
 
         mas[2] = x0 > x ? x0 : x;
-        mas[2]++;
+        mas[2]+=this._lineWidth+4;
         mas[3] = y0 > y ? y0 : y;
-        mas[3]++;
+        mas[3]+=this._lineWidth+4;
 
         return mas;
     }

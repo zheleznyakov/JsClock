@@ -1,13 +1,9 @@
 let el = document.getElementById("board");
 let ctx = el.getContext("2d");
-let fi = 270;
+let img = document.getElementById("image1");
 
-ctx.beginPath();
-ctx.arc(110, 110, 105, 0, 2 * Math.PI);
-ctx.stroke();
 
-const ar = new clockArrow(110, 110, 80, "hour", ctx);
+ctx.drawImage(img,10,10);
 
-const ar2 = new clockArrow(110, 110, 100, "min", ctx);
+const cl = new Clock(110,110,80, ctx);
 
-const ar3 = new clockArrow(110, 110, 100, "sec", ctx);
